@@ -2,6 +2,13 @@
 
 namespace Gdinko\DynamicExpress;
 
+use Gdinko\DynamicExpress\Commands\GetCarrierDynamicExpressApiStatus;
+use Gdinko\DynamicExpress\Commands\SyncCarrierDynamicExpressAll;
+use Gdinko\DynamicExpress\Commands\SyncCarrierDynamicExpressCities;
+use Gdinko\DynamicExpress\Commands\SyncCarrierDynamicExpressCountries;
+use Gdinko\DynamicExpress\Commands\SyncCarrierDynamicExpressOffices;
+
+
 use Illuminate\Support\ServiceProvider;
 
 class DynamicExpressServiceProvider extends ServiceProvider
@@ -19,8 +26,13 @@ class DynamicExpressServiceProvider extends ServiceProvider
             ], 'config');
 
             // Registering package commands.
-            // $this->commands([
-            // ]);
+            $this->commands([
+                SyncCarrierDynamicExpressAll::class,
+                SyncCarrierDynamicExpressCountries::class,
+                SyncCarrierDynamicExpressCities::class,
+                SyncCarrierDynamicExpressOffices::class,
+                GetCarrierDynamicExpressApiStatus::class,
+            ]);
         }
     }
 
