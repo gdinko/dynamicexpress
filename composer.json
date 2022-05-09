@@ -1,0 +1,65 @@
+{
+    "name": "gdinko/dynamicexpress",
+    "description": "Laravel Dynamic Express API Wrapper",
+    "keywords": [
+        "gdinko",
+        "dynamicexpress",
+        "dynamicexpress laravel",
+        "laravel"
+    ],
+    "homepage": "https://github.com/gdinko/dynamicexpress",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Dinko Georgiev",
+            "email": "dinko359@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "illuminate/support": "^8.0"
+    },
+    "require-dev": {
+        "nunomaduro/collision": "^5.11",
+        "nunomaduro/larastan": "^1.0",
+        "orchestra/testbench": "^6.0",
+        "pestphp/pest": "^1.21",
+        "pestphp/pest-plugin-laravel": "^1.2",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan-deprecation-rules": "^1.0",
+        "phpstan/phpstan-phpunit": "^1.1",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Gdinko\\DynamicExpress\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Gdinko\\DynamicExpress\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "analyse": "vendor/bin/phpstan analyse",
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Gdinko\\DynamicExpress\\DynamicExpressServiceProvider"
+            ],
+            "aliases": {
+                "DynamicExpress": "Gdinko\\DynamicExpress\\DynamicExpressFacade"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
