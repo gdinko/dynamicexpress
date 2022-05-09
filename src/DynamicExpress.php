@@ -3,7 +3,6 @@
 namespace Gdinko\DynamicExpress;
 
 use SoapClient;
-use stdClass;
 
 class DynamicExpress
 {
@@ -55,7 +54,7 @@ class DynamicExpress
         );
 
         return call_user_func_array(
-            array($this->client, $name),
+            [$this->client, $name],
             $arguments
         );
     }

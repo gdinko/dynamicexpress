@@ -47,7 +47,7 @@ class GetCarrierDynamicExpressApiStatus extends Command
         try {
             $countries = DynamicExpress::getCountries();
 
-            if (!empty($countries)) {
+            if (! empty($countries)) {
                 CarrierDynamicExpressApiStatus::create([
                     'code' => self::API_STATUS_OK,
                 ]);

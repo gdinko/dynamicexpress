@@ -68,12 +68,10 @@ class SyncCarrierDynamicExpressCities extends Command
         })->get();
 
         if ($countries->isNotEmpty()) {
-
             $countryCount = $countries->count();
             $i = 1;
 
             foreach ($countries as $country) {
-
                 $this->newLine();
                 $this->info("{$i}/{$countryCount} Importing Cities for {$country->name} | ISO Code: {$country->iso}");
 
@@ -114,7 +112,7 @@ class SyncCarrierDynamicExpressCities extends Command
 
         $bar->start();
 
-        if (!empty($cities)) {
+        if (! empty($cities)) {
             foreach ($cities as $city) {
                 $validated = $this->validated($city);
 

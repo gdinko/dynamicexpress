@@ -18,6 +18,6 @@ class CarrierDynamicExpressCity extends Model
         'site_type',
         'post_code',
         'eknm',
-        'delivery_weekdays'
+        'delivery_weekdays',
     ];
 }

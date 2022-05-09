@@ -11,7 +11,7 @@ use Illuminate\Console\Command;
 class SyncCarrierDynamicExpressCountries extends Command
 {
     use ValidatesImport;
-    
+
     /**
      * The name and signature of the console command.
      *
@@ -46,7 +46,6 @@ class SyncCarrierDynamicExpressCountries extends Command
         $this->info('-> Carrier Dynamic Express Import Countries');
 
         try {
-
             $this->import();
 
             $this->newLine(2);
@@ -81,7 +80,7 @@ class SyncCarrierDynamicExpressCountries extends Command
 
         $bar->start();
 
-        if (!empty($countries)) {
+        if (! empty($countries)) {
             CarrierDynamicExpressCountry::truncate();
 
             foreach ($countries as $country) {
