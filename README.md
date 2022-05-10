@@ -40,12 +40,54 @@ DYNAMICEXPRESS_API_WSDL= #default = https://system.dynamicexpress.eu/schema.wsdl
 
 ## Usage
 
+Runtime Setup
 ```php
-//
+DynamicExpress::setAccount('user', 'pass');
+```
+
+Commands
+
+```bash
+#sync countries with database
+php artisan dynamic-express:sync-countries  
+
+#sync cities with database
+php artisan dynamic-express:sync-cities 
+
+#sync offices with database
+php artisan dynamic-express:sync-offices 
+
+#sync all nomenclatures with database
+php artisan dynamic-express:sync-all
+
+#get today payments
+php artisan dynamic-express:get-payments
+
+#get dynamic express api status
+php artisan dynamic-express:api-status
+```
+
+Models
+```php
+CarrierDynamicExpressCountry
+CarrierDynamicExpressCity
+CarrierDynamicExpressOffice
+CarrierDynamicExpressPayment
+CarrierDynamicExpressApiStatus
 ```
 
 ## Examples
 
+You can use all methods from the WDSL Schema Like this:
+```php
+DynamicExpress::getMyObjectInfo();
+DynamicExpress::getMyObjects();
+DynamicExpress::getOfficesCity();
+DynamicExpress::getOfficesCord(100);
+DynamicExpress::getSoapCouriers();
+
+//and so on , see the documentation
+```
 
 ### Testing
 

@@ -11,14 +11,14 @@ class SyncCarrierDynamicExpressAll extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'dynamic-express:sync-all';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Sync All Dynamic Express nomenclatures';
 
     /**
      * Create a new command instance.
@@ -37,6 +37,12 @@ class SyncCarrierDynamicExpressAll extends Command
      */
     public function handle()
     {
+        $this->call('dynamic-express:sync-countries');
+
+        $this->call('dynamic-express:sync-cities');
+
+        $this->call('dynamic-express:sync-offices');
+
         return 0;
     }
 }

@@ -32,13 +32,25 @@ class DynamicExpress
         );
     }
 
+    /**
+     * setAccount
+     *
+     * @param  string $user
+     * @param  string $pass
+     * @return void
+     */
     public function setAccount($user, $pass)
     {
         $this->user = $user;
         $this->pass = $pass;
     }
 
-    public function getAccount()
+    /**
+     * getAccount
+     *
+     * @return object
+     */
+    public function getAccount(): object
     {
         return (object) [
             'user' => $this->user,
@@ -46,6 +58,12 @@ class DynamicExpress
         ];
     }
 
+    /**
+     * Call SOAP Methods
+     *
+     * @param  string $name
+     * @param  array $arguments
+     */
     public function __call(string $name, array $arguments)
     {
         array_unshift(

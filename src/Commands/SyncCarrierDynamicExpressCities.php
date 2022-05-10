@@ -82,7 +82,7 @@ class SyncCarrierDynamicExpressCities extends Command
                     $this->error(
                         $eive->getMessage()
                     );
-                    $this->error(
+                    $this->info(
                         print_r($eive->getData(), true)
                     );
                     $this->error(
@@ -99,7 +99,13 @@ class SyncCarrierDynamicExpressCities extends Command
             }
         }
     }
-
+    
+    /**
+     * importCities
+     *
+     * @param  mixed $countryIso
+     * @return void
+     */
     protected function importCities($countryIso)
     {
         CarrierDynamicExpressCity::where('country_iso', $countryIso)->delete();

@@ -3,12 +3,11 @@
 namespace Gdinko\DynamicExpress;
 
 use Gdinko\DynamicExpress\Commands\GetCarrierDynamicExpressApiStatus;
+use Gdinko\DynamicExpress\Commands\GetCarrierDynamicExpressPayments;
 use Gdinko\DynamicExpress\Commands\SyncCarrierDynamicExpressAll;
 use Gdinko\DynamicExpress\Commands\SyncCarrierDynamicExpressCities;
 use Gdinko\DynamicExpress\Commands\SyncCarrierDynamicExpressCountries;
 use Gdinko\DynamicExpress\Commands\SyncCarrierDynamicExpressOffices;
-
-
 use Illuminate\Support\ServiceProvider;
 
 class DynamicExpressServiceProvider extends ServiceProvider
@@ -31,6 +30,7 @@ class DynamicExpressServiceProvider extends ServiceProvider
                 SyncCarrierDynamicExpressCountries::class,
                 SyncCarrierDynamicExpressCities::class,
                 SyncCarrierDynamicExpressOffices::class,
+                GetCarrierDynamicExpressPayments::class,
                 GetCarrierDynamicExpressApiStatus::class,
             ]);
         }
