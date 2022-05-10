@@ -99,7 +99,7 @@ class SyncCarrierDynamicExpressCities extends Command
             }
         }
     }
-    
+
     /**
      * importCities
      *

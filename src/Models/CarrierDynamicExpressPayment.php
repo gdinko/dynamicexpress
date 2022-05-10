@@ -45,6 +45,6 @@ class CarrierDynamicExpressPayment extends Model
     ];
 
     protected $casts = [
-        'meta' => 'array'
+        'meta' => 'array',
     ];
 }

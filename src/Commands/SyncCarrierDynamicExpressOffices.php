@@ -96,7 +96,7 @@ class SyncCarrierDynamicExpressOffices extends Command
             }
         }
     }
-    
+
     /**
      * importOffices
      *
@@ -115,7 +115,7 @@ class SyncCarrierDynamicExpressOffices extends Command
 
         $bar->start();
 
-        if (!empty($offices)) {
+        if (! empty($offices)) {
             foreach ($offices as $office) {
                 $validated = $this->validated($office);
 
