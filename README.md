@@ -78,6 +78,49 @@ CarrierDynamicExpressApiStatus
 
 ## Examples
 
+Calculate price
+```php
+$data = [
+
+    // value is taken with getServices Method. Here 1 is ->
+    // -> "Бързи градски услуги" (fast urban services)
+    'service' => 1,
+
+    // value is taken with getSubServices Method. ->
+    // -> Here 18 is "48 часа икономична" (48h economical)
+    'subservice' => 18,
+
+    // 0(zero) or 1 (1 if there will be fixed delivery, 0 if not)
+    'fix_chas' => 0,
+
+    // 0(zero) or 1 (1 if there will be return reciept, 0 if not)
+    'return_receipt' => 0,
+
+    // 0(zero) or 1 (1 if there will be return document, 0 if not)
+    'return_doc' => 0,
+
+    // COD(cash on delivery). 0(zero) if there is no COD. ->
+    // -> USE "."(dot) for decimals!
+    'nal_platej' => 50,
+
+    // Insurance Value. 0(zero) if there is no insurance. ->
+    // -> USE "."(dot) for decimals!
+    'zastrahovka' => 50,
+
+    // Weigth in kg. CAN'T be 0(zero). Use "."(dot) for decimals.
+    'teglo' => 2.5,
+
+    // ID of the country(ISO standart). ->
+    // -> Required only for international delivery
+    'country_b' => 100,
+
+];
+
+$priceData = DynamicExpress::calculate($data);
+
+dd($priceData);
+```
+
 You can use all methods from the WDSL Schema Like this:
 ```php
 DynamicExpress::getMyObjectInfo();
