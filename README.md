@@ -27,7 +27,25 @@ php artisan migrate
 If you need to export configuration file:
 
 ```bash
-php artisan vendor:publish --provider="gdinko\dynamicexpress\DynamicExpressServiceProvider" --tag=config
+php artisan vendor:publish --tag=dynamicexpress-config
+```
+
+If you need to export migrations:
+
+```bash
+php artisan vendor:publish --tag=dynamicexpress-migrations
+```
+
+If you need to export models:
+
+```bash
+php artisan vendor:publish --tag=dynamicexpress-models
+```
+
+If you need to export commands:
+
+```bash
+php artisan vendor:publish --tag=dynamicexpress-commands
 ```
 
 ## Configuration
@@ -43,28 +61,51 @@ DYNAMICEXPRESS_API_WSDL= #default = https://system.dynamicexpress.eu/schema.wsdl
 Runtime Setup
 ```php
 DynamicExpress::setAccount('user', 'pass');
+
+DynamicExpress::addAccountToStore('AccountUser', 'AccountPass');
+DynamicExpress::getAccountFromStore('AccountUser');
+DynamicExpress::setAccountFromStore('AccountUser');
+```
+
+Multiple Account Support In AppServiceProvider add accounts in boot method
+```php
+public function boot()
+{
+    DynamicExpress::addAccountToStore(
+        'AccountUser',
+        'AccountPass'
+    );
+
+    DynamicExpress::addAccountToStore(
+        'AccountUser_XXX',
+        'AccountPass_XXX'
+    );
+}
 ```
 
 Commands
 
 ```bash
-#sync countries with database
+#sync countries with database (use -h to view options)
 php artisan dynamic-express:sync-countries  
 
-#sync cities with database
+#sync cities with database (use -h to view options)
 php artisan dynamic-express:sync-cities 
 
-#sync offices with database
+#sync offices with database (use -h to view options)
 php artisan dynamic-express:sync-offices 
 
-#sync all nomenclatures with database
+#sync all nomenclatures with database (use -h to view options)
 php artisan dynamic-express:sync-all
 
-#get today payments
+#get payments (use -h to view options)
 php artisan dynamic-express:get-payments
 
-#get dynamic express api status
+#get dynamic express api status (use -h to view options)
 php artisan dynamic-express:api-status
+
+#track parcels (use -h to view options)
+php artisan dynamic-express:track
 ```
 
 Models
@@ -74,6 +115,52 @@ CarrierDynamicExpressCity
 CarrierDynamicExpressOffice
 CarrierDynamicExpressPayment
 CarrierDynamicExpressApiStatus
+CarrierDynamicExpressTracking
+```
+
+Events
+
+```php
+CarrierDynamicExpressTrackingEvent
+CarrierDynamicExpressPaymentEvent
+```
+
+## Parcels Tracking
+
+1. Subscribe to tracking event, you will recieve last tracking info, if tracking command is schduled
+
+```php
+Event::listen(function (CarrierDynamicExpressTrackingEvent $event) {
+    echo $event->account;
+    dd($event->tracking);
+});
+```
+
+2. Before use of tracking command you need to create your own command and define setUp method
+
+```bash
+php artisan make:command TrackCarrierDynamicExpress
+```
+
+3. In app/Console/Commands/TrackCarrierDynamicExpress define your logic for parcels to be tracked
+
+```php
+use Gdinko\DynamicExpress\Commands\TrackCarrierDynamicExpressBase;
+
+class TrackCarrierDynamicExpressSetup extends TrackCarrierDynamicExpressBase
+{
+    protected function setup()
+    {
+        //define parcel selection logic here
+        // $this->parcels = [];
+    }
+}
+```
+
+4. Use the command
+
+```bash
+php artisan dynamic-express:track
 ```
 
 ## Examples
