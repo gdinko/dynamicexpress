@@ -3,8 +3,8 @@
 namespace Gdinko\DynamicExpress;
 
 use Gdinko\DynamicExpress\Exceptions\DynamicExpressException;
-use \SoapClient;
 use Illuminate\Support\Str;
+use SoapClient;
 
 class DynamicExpress
 {

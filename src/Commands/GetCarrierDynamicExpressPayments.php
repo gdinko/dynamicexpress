@@ -52,7 +52,6 @@ class GetCarrierDynamicExpressPayments extends Command
         $this->info('-> Carrier Dynamic Express Import Payments');
 
         try {
-
             $this->setAccount();
 
             $this->clear();
@@ -64,12 +63,11 @@ class GetCarrierDynamicExpressPayments extends Command
 
             $orders = DynamicExpress::getRazhodOrders($dateFrom, $dateTo);
 
-            if (!empty($orders)) {
+            if (! empty($orders)) {
                 $i = 1;
                 $ordersCount = count($orders);
 
                 foreach ($orders as $order) {
-
                     $this->info("{$i}/{$ordersCount} Importing Payments RID: {$order['RID']}");
 
                     $this->import($order);
@@ -146,7 +144,7 @@ class GetCarrierDynamicExpressPayments extends Command
 
         $bar->start();
 
-        if (!empty($payments)) {
+        if (! empty($payments)) {
             foreach ($payments as $payment) {
                 $validated = $this->validated($payment);
 

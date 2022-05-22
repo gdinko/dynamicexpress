@@ -5,7 +5,6 @@ namespace Gdinko\DynamicExpress\Commands;
 use Gdinko\DynamicExpress\Events\CarrierDynamicExpressTrackingEvent;
 use Gdinko\DynamicExpress\Exceptions\DynamicExpressImportValidationException;
 use Gdinko\DynamicExpress\Facades\DynamicExpress;
-use Gdinko\DynamicExpress\Hydrators\Request;
 use Gdinko\DynamicExpress\Models\CarrierDynamicExpressTracking;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
@@ -133,12 +132,12 @@ abstract class TrackCarrierDynamicExpressBase extends Command
 
         $bar->start();
 
-        if (!empty($this->parcels)) {
+        if (! empty($this->parcels)) {
             $trackingInfo = DynamicExpress::track_order_array(
                 $this->parcels
             );
 
-            if (!empty($trackingInfo)) {
+            if (! empty($trackingInfo)) {
                 $this->processTracking($trackingInfo, $bar);
             }
         }
@@ -156,7 +155,6 @@ abstract class TrackCarrierDynamicExpressBase extends Command
     protected function processTracking(array $trackingInfo, $bar)
     {
         foreach ($trackingInfo as $tracking) {
-
             $parcelId = $tracking['AWB'];
             unset($tracking['AWB']);
 
@@ -171,7 +169,7 @@ abstract class TrackCarrierDynamicExpressBase extends Command
                 ]
             );
 
-            if (!$this->muteEvents) {
+            if (! $this->muteEvents) {
                 CarrierDynamicExpressTrackingEvent::dispatch(
                     array_pop($tracking),
                     DynamicExpress::getUserName()
