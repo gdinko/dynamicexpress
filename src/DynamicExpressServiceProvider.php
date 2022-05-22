@@ -20,9 +20,22 @@ class DynamicExpressServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
         if ($this->app->runningInConsole()) {
+
             $this->publishes([
                 __DIR__ . '/../config/dynamicexpress.php' => config_path('dynamicexpress.php'),
-            ], 'config');
+            ], 'dynamicexpress-config');
+
+            $this->publishes([
+                __DIR__ . '/../database/migrations/' => database_path('migrations'),
+            ], 'dynamicexpress-migrations');
+
+            $this->publishes([
+                __DIR__ . '/Models/' => app_path('Models'),
+            ], 'dynamicexpress-models');
+
+            $this->publishes([
+                __DIR__ . '/Commands/' => app_path('Console/Commands'),
+            ], 'dynamicexpress-commands');
 
             // Registering package commands.
             $this->commands([

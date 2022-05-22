@@ -30,12 +30,18 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|CarrierDynamicExpressPayment whereRid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CarrierDynamicExpressPayment whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string $carrier_signature
+ * @property string $carrier_account
+ * @method static \Illuminate\Database\Eloquent\Builder|CarrierDynamicExpressPayment whereCarrierAccount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CarrierDynamicExpressPayment whereCarrierSignature($value)
  */
 class CarrierDynamicExpressPayment extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'carrier_signature',
+        'carrier_account',
         'num',
         'rid',
         'pay_type',

@@ -2,11 +2,13 @@
 
 namespace Gdinko\DynamicExpress\Commands;
 
+use Gdinko\DynamicExpress\Events\CarrierDynamicExpressPaymentEvent;
 use Gdinko\DynamicExpress\Exceptions\DynamicExpressImportValidationException;
 use Gdinko\DynamicExpress\Facades\DynamicExpress;
 use Gdinko\DynamicExpress\Models\CarrierDynamicExpressPayment;
 use Gdinko\DynamicExpress\Traits\ValidatesImport;
 use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
 
 class GetCarrierDynamicExpressPayments extends Command
 {
@@ -17,7 +19,11 @@ class GetCarrierDynamicExpressPayments extends Command
      *
      * @var string
      */
-    protected $signature = 'dynamic-express:get-payments {--date_from=} {--date_to=}';
+    protected $signature = 'dynamic-express:get-payments
+                            {--account= : Set DynamicExpress API Account}
+                            {--date_from=}
+                            {--date_to=}
+                            {--clear= : Clear Database table from records older than X days} {--timeout=20 : DynamicExpress API Call timeout}';
 
     /**
      * The console command description.
@@ -45,47 +51,83 @@ class GetCarrierDynamicExpressPayments extends Command
     {
         $this->info('-> Carrier Dynamic Express Import Payments');
 
-        $dateFrom = $this->option('date_from') ?: date('Y-m-d');
-        $dateTo = $this->option('date_to') ?: date('Y-m-d');
+        try {
 
-        $this->info("Date From: {$dateFrom} - Date To: {$dateTo}");
+            $this->setAccount();
 
-        $orders = DynamicExpress::getRazhodOrders($dateFrom, $dateTo);
+            $this->clear();
 
-        if (! empty($orders)) {
-            $i = 1;
-            $ordersCount = count($orders);
+            $dateFrom = $this->option('date_from') ?: date('Y-m-d');
+            $dateTo = $this->option('date_to') ?: date('Y-m-d');
 
-            foreach ($orders as $order) {
-                $this->info("{$i}/{$ordersCount} Importing Payments RID: {$order['RID']}");
+            $this->info("Date From: {$dateFrom} - Date To: {$dateTo}");
 
-                try {
+            $orders = DynamicExpress::getRazhodOrders($dateFrom, $dateTo);
+
+            if (!empty($orders)) {
+                $i = 1;
+                $ordersCount = count($orders);
+
+                foreach ($orders as $order) {
+
+                    $this->info("{$i}/{$ordersCount} Importing Payments RID: {$order['RID']}");
+
                     $this->import($order);
 
                     $this->newLine(2);
-                } catch (DynamicExpressImportValidationException $eive) {
-                    $this->newLine();
-                    $this->error(
-                        $eive->getMessage()
-                    );
-                    $this->info(
-                        print_r($eive->getData(), true)
-                    );
-                    $this->error(
-                        print_r($eive->getErrors(), true)
-                    );
-                } catch (\Exception $e) {
-                    $this->newLine();
-                    $this->error(
-                        $e->getMessage()
-                    );
-                }
 
-                $i++;
+                    $i++;
+                }
             }
+        } catch (DynamicExpressImportValidationException $eive) {
+            $this->newLine();
+            $this->error(
+                $eive->getMessage()
+            );
+            $this->info(
+                print_r($eive->getData(), true)
+            );
+            $this->error(
+                print_r($eive->getErrors(), true)
+            );
+        } catch (\Exception $e) {
+            $this->newLine();
+            $this->error(
+                $e->getMessage()
+            );
         }
 
         return 0;
+    }
+
+    /**
+     * setAccount
+     *
+     * @return void
+     */
+    protected function setAccount()
+    {
+        if ($this->option('account')) {
+            DynamicExpress::setAccountFromStore(
+                $this->option('account')
+            );
+        }
+    }
+
+    /**
+     * clear
+     *
+     * @return void
+     */
+    protected function clear()
+    {
+        if ($days = $this->option('clear')) {
+            $clearDate = Carbon::now()->subDays($days)->format('Y-m-d H:i:s');
+
+            $this->info("-> Carrier Dynamic Express Import Payments : Clearing entries older than: {$clearDate}");
+
+            CarrierDynamicExpressPayment::where('created_at', '<=', $clearDate)->delete();
+        }
     }
 
     /**
@@ -104,11 +146,13 @@ class GetCarrierDynamicExpressPayments extends Command
 
         $bar->start();
 
-        if (! empty($payments)) {
+        if (!empty($payments)) {
             foreach ($payments as $payment) {
                 $validated = $this->validated($payment);
 
-                CarrierDynamicExpressPayment::create([
+                $carrierDynamicExpressPayment = CarrierDynamicExpressPayment::create([
+                    'carrier_signature' => DynamicExpress::getSignature(),
+                    'carrier_account' => DynamicExpress::getUserName(),
                     'num' => $validated['TOVARITELNICA'],
                     'rid' => $order['RID'],
                     'pay_type' => $order['PAYTYPE'],
@@ -119,6 +163,11 @@ class GetCarrierDynamicExpressPayments extends Command
                         'client_ref1' => $validated['CLIENT_REF1'],
                     ],
                 ]);
+
+                CarrierDynamicExpressPaymentEvent::dispatch(
+                    $carrierDynamicExpressPayment,
+                    DynamicExpress::getUserName()
+                );
 
                 $bar->advance();
             }

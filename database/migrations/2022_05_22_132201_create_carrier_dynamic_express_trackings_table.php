@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCarrierDynamicExpressApiStatusesTable extends Migration
+class CreateCarrierDynamicExpressTrackingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class CreateCarrierDynamicExpressApiStatusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('carrier_dynamic_express_api_statuses', function (Blueprint $table) {
+        Schema::create('carrier_dynamic_express_trackings', function (Blueprint $table) {
             $table->id();
-
-            $table->integer('code');
             
+            $table->string('carrier_signature')->index();
+            $table->string('carrier_account')->index();
+            $table->bigInteger('parcel_id')->unique()->index();
+            $table->json('meta')->nullable();
+
             $table->timestamps();
 
             $table->index('created_at');
@@ -31,6 +34,6 @@ class CreateCarrierDynamicExpressApiStatusesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('carrier_dynamic_express_api_statuses');
+        Schema::dropIfExists('carrier_dynamic_express_trackings');
     }
 }

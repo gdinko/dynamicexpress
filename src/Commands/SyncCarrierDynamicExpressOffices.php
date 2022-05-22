@@ -18,7 +18,8 @@ class SyncCarrierDynamicExpressOffices extends Command
      *
      * @var string
      */
-    protected $signature = 'dynamic-express:sync-offices {--country-iso= : Sync offices for country ISO Code}';
+    protected $signature = 'dynamic-express:sync-offices
+                            {--country-iso= : Sync offices for country ISO Code}';
 
     /**
      * The console command description.

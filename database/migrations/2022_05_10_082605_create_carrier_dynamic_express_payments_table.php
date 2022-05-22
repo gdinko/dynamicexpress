@@ -16,6 +16,8 @@ class CreateCarrierDynamicExpressPaymentsTable extends Migration
         Schema::create('carrier_dynamic_express_payments', function (Blueprint $table) {
             $table->id();
 
+            $table->string('carrier_signature')->index();
+            $table->string('carrier_account')->index();
             $table->string('num')->index()->unique();
             $table->string('rid')->index();
             $table->string('pay_type');
@@ -24,6 +26,8 @@ class CreateCarrierDynamicExpressPaymentsTable extends Migration
             $table->json('meta')->nullable();            
 
             $table->timestamps();
+
+            $table->index('created_at');
         });
     }
 

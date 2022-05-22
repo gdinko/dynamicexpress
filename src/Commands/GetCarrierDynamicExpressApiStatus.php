@@ -5,6 +5,7 @@ namespace Gdinko\DynamicExpress\Commands;
 use Gdinko\DynamicExpress\Facades\DynamicExpress;
 use Gdinko\DynamicExpress\Models\CarrierDynamicExpressApiStatus;
 use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
 
 class GetCarrierDynamicExpressApiStatus extends Command
 {
@@ -16,7 +17,8 @@ class GetCarrierDynamicExpressApiStatus extends Command
      *
      * @var string
      */
-    protected $signature = 'dynamic-express:api-status';
+    protected $signature = 'dynamic-express:api-status
+                            {--clear= : Clear Database table from records older than X days}';
 
     /**
      * The console command description.
@@ -45,9 +47,11 @@ class GetCarrierDynamicExpressApiStatus extends Command
         $this->info('-> Carrier Dynamic Express Api Status');
 
         try {
+            $this->clear();
+
             $countries = DynamicExpress::getCountries();
 
-            if (! empty($countries)) {
+            if (!empty($countries)) {
                 CarrierDynamicExpressApiStatus::create([
                     'code' => self::API_STATUS_OK,
                 ]);
@@ -67,5 +71,21 @@ class GetCarrierDynamicExpressApiStatus extends Command
         }
 
         return 0;
+    }
+
+    /**
+     * clear
+     *
+     * @return void
+     */
+    protected function clear()
+    {
+        if ($days = $this->option('clear')) {
+            $clearDate = Carbon::now()->subDays($days)->format('Y-m-d H:i:s');
+
+            $this->info("-> Carrier Dynamic Express Api Status : Clearing entries older than: {$clearDate}");
+
+            CarrierDynamicExpressApiStatus::where('created_at', '<=', $clearDate)->delete();
+        }
     }
 }

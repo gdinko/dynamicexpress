@@ -18,7 +18,8 @@ class SyncCarrierDynamicExpressCities extends Command
      *
      * @var string
      */
-    protected $signature = 'dynamic-express:sync-cities {--country-iso= : Sync cities for country ISO Code}';
+    protected $signature = 'dynamic-express:sync-cities
+                            {--country-iso= : Sync cities for country ISO Code}';
 
     /**
      * The console command description.
