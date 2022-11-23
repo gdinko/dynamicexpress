@@ -19,7 +19,8 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
-        "illuminate/support": "^8.0|^9.0"
+        "illuminate/support": "^8.0|^9.0",
+        "league/iso3166": "^4.1"
     },
     "require-dev": {
         "nunomaduro/collision": "^5.11",
@@ -56,7 +57,7 @@
                 "Gdinko\\DynamicExpress\\DynamicExpressServiceProvider"
             ],
             "aliases": {
-                "DynamicExpress": "Gdinko\\DynamicExpress\\DynamicExpressFacade"
+                "DynamicExpress": "Gdinko\\DynamicExpress\\Facades\\DynamicExpress"
             }
         }
     },

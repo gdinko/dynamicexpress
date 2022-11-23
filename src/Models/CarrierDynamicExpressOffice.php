@@ -46,6 +46,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|CarrierDynamicExpressOffice whereSubconId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CarrierDynamicExpressOffice whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string|null $city_uuid
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Gdinko\DynamicExpress\Models\CarrierCityMap[] $cityMap
+ * @property-read int|null $city_map_count
+ * @method static \Illuminate\Database\Eloquent\Builder|CarrierDynamicExpressOffice whereCityUuid($value)
  */
 class CarrierDynamicExpressOffice extends Model
 {
@@ -57,6 +61,7 @@ class CarrierDynamicExpressOffice extends Model
         'office_type',
         'country_iso',
         'site_id',
+        'city_uuid',
         'city',
         'post_code',
         'address',
@@ -72,12 +77,31 @@ class CarrierDynamicExpressOffice extends Model
         'meta' => 'array',
     ];
 
+    /**
+     * city
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function city()
     {
         return $this->belongsTo(
             CarrierDynamicExpressCity::class,
             'site_id',
             'site_id'
+        );
+    }
+
+    /**
+     * cityMap
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function cityMap()
+    {
+        return $this->hasMany(
+            CarrierCityMap::class,
+            'uuid',
+            'city_uuid'
         );
     }
 }

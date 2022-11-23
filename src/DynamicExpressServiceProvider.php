@@ -4,6 +4,7 @@ namespace Gdinko\DynamicExpress;
 
 use Gdinko\DynamicExpress\Commands\GetCarrierDynamicExpressApiStatus;
 use Gdinko\DynamicExpress\Commands\GetCarrierDynamicExpressPayments;
+use Gdinko\DynamicExpress\Commands\MapCarrierDynamicExpressCities;
 use Gdinko\DynamicExpress\Commands\SyncCarrierDynamicExpressAll;
 use Gdinko\DynamicExpress\Commands\SyncCarrierDynamicExpressCities;
 use Gdinko\DynamicExpress\Commands\SyncCarrierDynamicExpressCountries;
@@ -44,6 +45,7 @@ class DynamicExpressServiceProvider extends ServiceProvider
                 SyncCarrierDynamicExpressOffices::class,
                 GetCarrierDynamicExpressPayments::class,
                 GetCarrierDynamicExpressApiStatus::class,
+                MapCarrierDynamicExpressCities::class,
             ]);
         }
     }

@@ -93,7 +93,10 @@ php artisan dynamic-express:sync-countries
 php artisan dynamic-express:sync-cities 
 
 #sync offices with database (use -h to view options)
-php artisan dynamic-express:sync-offices 
+php artisan dynamic-express:sync-offices
+
+#create cities map with other carriers in database  (use -h to view options)
+php artisan dynamic-express:map-cities
 
 #sync all nomenclatures with database (use -h to view options)
 php artisan dynamic-express:sync-all
