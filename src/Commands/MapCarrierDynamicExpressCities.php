@@ -10,8 +10,8 @@ use Gdinko\DynamicExpress\Models\CarrierDynamicExpressCountry;
 use Gdinko\DynamicExpress\Models\CarrierDynamicExpressOffice;
 use Gdinko\DynamicExpress\Traits\ValidatesImport;
 use Illuminate\Console\Command;
-use League\ISO3166\ISO3166;
 use Illuminate\Support\Str;
+use League\ISO3166\ISO3166;
 use Ramsey\Uuid\Uuid;
 
 class MapCarrierDynamicExpressCities extends Command
@@ -73,7 +73,7 @@ class MapCarrierDynamicExpressCities extends Command
 
         $countries = CarrierDynamicExpressCountry::where('iso', $countryIso)->get();
 
-        if (!CarrierDynamicExpressOffice::where('country_iso', $countryIso)->count()) {
+        if (! CarrierDynamicExpressOffice::where('country_iso', $countryIso)->count()) {
             $this->newLine();
             $this->warn('[WARN] Import Dynamic Express offices first to map office city ...');
             $this->newLine();
@@ -120,10 +120,9 @@ class MapCarrierDynamicExpressCities extends Command
      */
     protected function importCities($countryIso)
     {
-
         $cities = DynamicExpress::getCityes($countryIso);
 
-        $countryIsoCodes = (new ISO3166)->numeric($countryIso);
+        $countryIsoCodes = (new ISO3166())->numeric($countryIso);
 
         $bar = $this->output->createProgressBar(
             count($cities)
@@ -131,8 +130,7 @@ class MapCarrierDynamicExpressCities extends Command
 
         $bar->start();
 
-        if (!empty($cities) && !empty($countryIsoCodes)) {
-
+        if (! empty($cities) && ! empty($countryIsoCodes)) {
             CarrierCityMap::where(
                 'carrier_signature',
                 DynamicExpress::getSignature()
