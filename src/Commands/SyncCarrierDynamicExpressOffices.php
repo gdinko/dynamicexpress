@@ -8,6 +8,8 @@ use Gdinko\DynamicExpress\Models\CarrierDynamicExpressCountry;
 use Gdinko\DynamicExpress\Models\CarrierDynamicExpressOffice;
 use Gdinko\DynamicExpress\Traits\ValidatesImport;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
+use Ramsey\Uuid\Uuid;
 
 class SyncCarrierDynamicExpressOffices extends Command
 {
@@ -116,7 +118,7 @@ class SyncCarrierDynamicExpressOffices extends Command
 
         $bar->start();
 
-        if (! empty($offices)) {
+        if (!empty($offices)) {
             foreach ($offices as $office) {
                 $validated = $this->validated($office);
 
@@ -126,6 +128,16 @@ class SyncCarrierDynamicExpressOffices extends Command
                     'office_type' => $validated['RTYPE'],
                     'country_iso' => $validated['COUNTRY_ID'],
                     'site_id' => $validated['SITEID'],
+                    'city_uuid' => $this->getUuid(
+                        $this->getSlug(
+                            $this->getSlug(
+                                $this->normalizeCityName(
+                                    $validated['CITY']
+                                )
+                            ) . ' ' . $validated['PK']
+                        )
+                    ),
+
                     'city' => $validated['CITY'],
                     'post_code' => $validated['PK'],
                     'address' => $validated['ADDRESS'],
@@ -195,5 +207,43 @@ class SyncCarrierDynamicExpressOffices extends Command
             'COUNTRY_ID' => 'integer|required',
             'OFFICEREF' => 'string|nullable',
         ];
+    }
+
+    /**
+     * normalizeCityName
+     *
+     * @param  string $name
+     * @return string
+     */
+    protected function normalizeCityName(string $name): string
+    {
+        return Str::title(
+            explode(',', $name)[0]
+        );
+    }
+
+    /**
+     * getSlug
+     *
+     * @param  string $string
+     * @return string
+     */
+    protected function getSlug(string $string): string
+    {
+        return Str::slug($string);
+    }
+
+    /**
+     * getUuid
+     *
+     * @param  string $string
+     * @return string
+     */
+    protected function getUuid(string $string): string
+    {
+        return Uuid::uuid5(
+            Uuid::NAMESPACE_URL,
+            $string
+        )->toString();
     }
 }

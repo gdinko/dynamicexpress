@@ -85,7 +85,7 @@ class MapCarrierDynamicExpressCities extends Command
 
             foreach ($countries as $country) {
                 $this->newLine();
-                $this->info("{$i}/{$countryCount} Importing Cities for {$country->name} | ISO Code: {$country->iso}");
+                $this->info("{$i}/{$countryCount} Map Cities for {$country->name} | ISO Code: {$country->iso}");
 
                 try {
                     $this->importCities($country->iso);
@@ -140,18 +140,6 @@ class MapCarrierDynamicExpressCities extends Command
 
             foreach ($cities as $city) {
                 $validated = $this->validated($city);
-
-                // CarrierDynamicExpressCity::create([
-                //     'country_iso' => $validated['COUNTRYID_ISO'],
-                //     'site_id' => $validated['SITEID'],
-                //     'name' => $validated['NAME'],
-                //     'region' => $validated['OBLAST'],
-                //     'municipality' => $validated['OBSHTINA'],
-                //     'site_type' => $validated['SITETYPE'],
-                //     'post_code' => $validated['POSTCODE'],
-                //     'eknm' => $validated['EKNM'],
-                //     'delivery_weekdays' => $validated['DELIVERYWEEKDAYS'] ?? null,
-                // ]);
 
                 $name = $this->normalizeCityName(
                     $validated['NAME']
