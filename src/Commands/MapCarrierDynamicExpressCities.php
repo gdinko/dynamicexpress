@@ -5,7 +5,6 @@ namespace Gdinko\DynamicExpress\Commands;
 use Gdinko\DynamicExpress\Exceptions\DynamicExpressImportValidationException;
 use Gdinko\DynamicExpress\Facades\DynamicExpress;
 use Gdinko\DynamicExpress\Models\CarrierCityMap;
-use Gdinko\DynamicExpress\Models\CarrierDynamicExpressCity;
 use Gdinko\DynamicExpress\Models\CarrierDynamicExpressCountry;
 use Gdinko\DynamicExpress\Models\CarrierDynamicExpressOffice;
 use Gdinko\DynamicExpress\Traits\ValidatesImport;
